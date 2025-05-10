@@ -54,7 +54,7 @@ module.exports.handleReply = async function ({ api, event, handleReply }) {
         api.unsendMessage(handleReply.messageID)
         return api.sendMessage({ 
 		body: `🎵 Title: ${data.title}\n🎶 Name Channel : ${data.author}\n⏱️ Time: ${this.convertHMS(data.dur)}\n👀 Views: ${data.viewCount}\n🥰 Likes: ${data.likes}\n⏱️Processing time: ${Math.floor((Date.now()- data.timestart)/1000)} second\n    
-      𒁍≛⃝𝐌𝐫..𝐀𝐚𝐫𝐲𝐚𝐧🥀💔',
+      𒁍≛⃝𝐌𝐫..𝐂𝐇𝐔𝐙𝐀🥀💔',
             attachment: fs.createReadStream(path)}, event.threadID, ()=> fs.unlinkSync(path), 
          event.messageID)
             

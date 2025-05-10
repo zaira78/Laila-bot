@@ -14,7 +14,7 @@ module.exports.handleEvent = function({ api, event, client, __GLOBAL }) {
 	var { threadID, messageID } = event;
 	if (event.body.indexOf("😘")==0 || event.body.indexOf("Kiss")==0 || event.body.indexOf("Chumma")==0 || event.body.indexOf("💋")==0) {
 		var msg = {
-				body: "Ummaaaahhhhhh😘😘 Baby 😘",
+				body: "𝐔𝐦𝐦𝐚𝐚𝐚𝐚𝐡𝐡𝐡 𝐁𝐚𝐛𝐲",
 			}
 			api.sendMessage( msg, threadID, messageID);
     api.setMessageReaction("😘", event.messageID, (err) => {}, true)
