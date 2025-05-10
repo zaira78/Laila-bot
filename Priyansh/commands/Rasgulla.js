@@ -14,7 +14,7 @@ module.exports.handleEvent = function({ api, event, client, __GLOBAL }) {
 	var { threadID, messageID } = event;
 	if (event.body.indexOf("Rasgulla")==0 || event.body.indexOf("rasgulla")==0 || event.body.indexOf("rasgulla")==0 || event.body.indexOf("Rasgulle")==0) {
 		var msg = {
-				body: "💝 YE LO BBY RASGULLA KHAO 🧀\n\n(-𝐌𝐚𝐝𝐞 𝐁𝐲 𝗠𝗿..𝗔𝗮𝗿𝘆𝗮𝗻❤️-)",
+				body: "💝 YE LO BBY RASGULLA KHAO 🧀\n\n(-𝐌𝐚𝐝𝐞 𝐁𝐲 𝗠𝗿..𝐂𝐇𝐔𝐙𝐀❤️-)",
 				attachment: 
 fs.createReadStream(__dirname + `/cache/rasgulla.jpg`)
 			}
