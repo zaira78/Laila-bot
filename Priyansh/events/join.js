@@ -7,8 +7,7 @@ module.exports.config = {
   description: "Welcome new members with custom message"
 };
 
-module.exports.run = async function({ api, event, Users }) {
-  const { join } = require("path");
+module.exports.run = async function({ api, event }) {
   const { threadID } = event;
   
   if (event.logMessageData.addedParticipants.some(i => i.userFbId == api.getCurrentUserID())) {
@@ -21,8 +20,7 @@ module.exports.run = async function({ api, event, Users }) {
   let msg = `Welcome to ${threadData.threadName}\n`;
 
   for (const { userFbId } of event.logMessageData.addedParticipants) {
-    const userInfo = await Users.getInfo(userFbId);
-    const userName = userInfo?.name || "New member";
+    const userName = event.logMessageData.addedParticipants.find(p => p.userFbId === userFbId)?.fullName || "New member";
     mentions.push({ tag: userName, id: userFbId });
     msg += `→ ${userName}\n`;
   }
