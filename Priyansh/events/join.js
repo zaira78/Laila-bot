@@ -1,4 +1,3 @@
-
 module.exports.config = {
   name: "join",
   eventType: ["log:subscribe"],
@@ -10,12 +9,12 @@ module.exports.config = {
 module.exports.run = async function({ api, event }) {
   try {
     const { threadID } = event;
-    
+
     if (event.logMessageData.addedParticipants.some(i => i.userFbId == api.getCurrentUserID())) {
-      api.changeNickname(`[ ${global.config.PREFIX} ] • ${(!global.config.BOTNAME) ? "Bot" : global.config.BOTNAME}`, threadID, api.getCurrentUserID());
+      await api.changeNickname(`[ ${global.config.PREFIX} ] • ${(!global.config.BOTNAME) ? "Bot" : global.config.BOTNAME}`, threadID, api.getCurrentUserID());
       return api.sendMessage(`Connected successfully! Type ${global.config.PREFIX}help to see available commands.`, threadID);
     }
-    
+
     const threadData = await api.getThreadInfo(threadID);
     const mentions = [];
     let msg = `Welcome to ${threadData.threadName}\n`;
@@ -27,7 +26,7 @@ module.exports.run = async function({ api, event }) {
     }
 
     msg += "\nWelcome to the group! 🎉";
-    
+
     return api.sendMessage({
       body: msg,
       mentions

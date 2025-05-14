@@ -18,7 +18,7 @@ app.get('/', function (req, res) {
 });
 
 // Start the server and add error handling
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
     logger(`Server is running on port ${port}...`, "[ Starting ]");
 }).on('error', (err) => {
     if (err.code === 'EACCES') {
