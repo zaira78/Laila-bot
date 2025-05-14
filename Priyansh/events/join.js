@@ -4,33 +4,32 @@ module.exports.config = {
   eventType: ["log:subscribe"],
   version: "1.0.0",
   credits: "Priyansh",
-  description: "Notify group member changes"
+  description: "Notify new member joins"
 };
 
 module.exports.run = async function({ api, event, Users }) {
+  const { threadID } = event;
+  const { readFileSync, existsSync } = require("fs-extra");
+  const { join } = require("path");
+  const welcomeMessage = "Welcome to the group! 🎉";
+  
   try {
-    const { threadID } = event;
-    if (!event.logMessageData || !event.logMessageData.addedParticipants) {
-      return;
-    }
-    
-    const botID = api.getCurrentUserID();
-    const joinIDs = event.logMessageData.addedParticipants.map(user => user.userFbId);
-    
-    if (joinIDs.includes(botID)) {
-      return api.sendMessage(`Connected successfully! Thanks for adding me.`, threadID);
-    }
+    const threadData = await api.getThreadInfo(threadID);
+    if (!threadData) return;
 
-    for (const id of joinIDs) {
-      try {
-        const userName = await Users.getNameUser(id);
-        const welcomeMessage = `Welcome ${userName} to the group! 👋`;
-        await api.sendMessage(welcomeMessage, threadID);
-      } catch (err) {
-        console.error(`Error welcoming user ${id}:`, err.message);
-      }
+    const joinedUserIDs = event.logMessageData.addedParticipants.map(user => user.userFbId);
+    
+    for (const userID of joinedUserIDs) {
+      const userInfo = await Users.getInfo(userID);
+      const userName = userInfo?.name || "New member";
+      
+      // Send welcome message
+      await api.sendMessage(
+        `${welcomeMessage}\n→ Welcome ${userName} to ${threadData.threadName}!`,
+        threadID
+      );
     }
   } catch (error) {
-    console.error('Error in join event:', error.message);
+    console.error("Join event error:", error);
   }
 };

@@ -1,9 +1,10 @@
+
 module.exports.config = {
   name: "hackv2",
   version: "1.0.0",
   hasPermssion: 0,
   credits: "Priyansh",
-  description: "Simulated account hacking (joke command)",
+  description: "Simulated account hacking (joke command)", 
   commandCategory: "fun",
   usages: "@mention",
   cooldowns: 5,
@@ -23,20 +24,18 @@ module.exports.run = async function({ api, event, args }) {
 
   try {
     var id = Object.keys(event.mentions)[0] || event.senderID;
-
-    let background = ["https://i.imgur.com/Cozetb3.jpg"];
-    let rd = background[Math.floor(Math.random() * background.length)];
+    let name = event.mentions[id]?.replace("@", "") || "User";
 
     // Get avatar
     let avatarResponse = await axios.get(
       `https://graph.facebook.com/${id}/picture?width=720&height=720&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`,
       { responseType: "arraybuffer" }
     );
-    fs.writeFileSync(pathAvt, Buffer.from(avatarResponse.data));
+    fs.writeFileSync(pathAvt, Buffer.from(avatarResponse.data, 'binary'));
 
     // Get background
-    let bgResponse = await axios.get(rd, { responseType: "arraybuffer" });
-    fs.writeFileSync(pathImg, Buffer.from(bgResponse.data));
+    let bgResponse = await axios.get("https://i.imgur.com/Cozetb3.jpg", { responseType: "arraybuffer" });
+    fs.writeFileSync(pathImg, Buffer.from(bgResponse.data, 'binary'));
 
     let baseImage = await loadImage(pathImg);
     let baseAvatar = await loadImage(pathAvt);
@@ -50,8 +49,6 @@ module.exports.run = async function({ api, event, args }) {
     ctx.font = "400 26px Arial";
     ctx.fillStyle = "#00FFFF";
     ctx.textAlign = "start";
-
-    let name = event.mentions[id]?.replace("@", "") || "User";
     ctx.fillText(name, 200, 340);
 
     const imageBuffer = canvas.toBuffer();
@@ -68,6 +65,6 @@ module.exports.run = async function({ api, event, args }) {
     );
   } catch (error) {
     console.error(error);
-    return api.sendMessage("Error processing command.", event.threadID, event.messageID);
+    return api.sendMessage("Error processing command. Please try again later.", event.threadID, event.messageID);
   }
 };
