@@ -42,7 +42,10 @@ module.exports.wrapText = (ctx, name, maxWidth) => {
   });
 };
 
-module.exports.run = async function ({ api, event, Users }) {
+const axios = require("axios");
+const fs = require("fs-extra");
+
+module.exports.run = async function({ api, event, args }) {
   const pathImg = __dirname + "/cache/background.png";
   const pathAvt = __dirname + "/cache/Avtmot.png";
 
