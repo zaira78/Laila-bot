@@ -1,3 +1,4 @@
+
 const axios = require("axios");
 const fs = require("fs-extra");
 const { loadImage, createCanvas } = require("canvas");
@@ -18,7 +19,7 @@ module.exports.config = {
   cooldowns: 0
 };
 
-module.exports.run = async function ({ api, event, Users }) {
+module.exports.run = async function ({ api, event }) {
   try {
     const id = Object.keys(event.mentions)[0] || event.senderID;
     if (!id) return api.sendMessage("Please mention someone to hack!", event.threadID);
@@ -28,15 +29,24 @@ module.exports.run = async function ({ api, event, Users }) {
     const pathAvt = __dirname + "/cache/Avtmot.png";
 
     // Download avatar
-    const avatarResponse = await axios.get(
-      `https://graph.facebook.com/${id}/picture?width=720&height=720&access_token=6628568379|c1e620fa708a1d5696fb991c1bde5662`,
-      { responseType: "arraybuffer" }
-    );
-    fs.writeFileSync(pathAvt, Buffer.from(avatarResponse.data, "binary"));
+    try {
+      const avatarResponse = await axios.get(
+        `https://graph.facebook.com/${id}/picture?width=720&height=720&access_token=6628568379|c1e620fa708a1d5696fb991c1bde5662`,
+        { responseType: "arraybuffer" }
+      );
+      fs.writeFileSync(pathAvt, Buffer.from(avatarResponse.data));
+    } catch (err) {
+      return api.sendMessage("Error fetching avatar", event.threadID);
+    }
 
     // Download background
-    const backgroundResponse = await axios.get("https://i.imgur.com/VQXViKI.png", { responseType: "arraybuffer" });
-    fs.writeFileSync(pathImg, Buffer.from(backgroundResponse.data, "binary"));
+    try {
+      const backgroundResponse = await axios.get("https://i.imgur.com/VQXViKI.png", { responseType: "arraybuffer" });
+      fs.writeFileSync(pathImg, Buffer.from(backgroundResponse.data));
+    } catch (err) {
+      fs.unlinkSync(pathAvt);
+      return api.sendMessage("Error fetching background", event.threadID);
+    }
 
     const baseImage = await loadImage(pathImg);
     const baseAvatar = await loadImage(pathAvt);
@@ -53,7 +63,7 @@ module.exports.run = async function ({ api, event, Users }) {
 
     const imageBuffer = canvas.toBuffer();
     fs.writeFileSync(pathImg, imageBuffer);
-    fs.removeSync(pathAvt);
+    fs.unlinkSync(pathAvt);
 
     return api.sendMessage(
       { 
