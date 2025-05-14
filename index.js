@@ -55,7 +55,13 @@ function startBot(message) {
     });
 
     child.on("error", (error) => {
-        logger(`An error occurred: ${JSON.stringify(error)}`, "[ Error ]");
+        logger(`An error occurred: ${error.message}`, "[ Error ]");
+        if (global.countRestart < 5) {
+            global.countRestart++;
+            startBot("Restarting due to error...");
+        } else {
+            logger("Too many restart attempts, stopping bot", "[ Error ]");
+        }
     });
 };
 
