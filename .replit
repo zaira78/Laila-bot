@@ -6,7 +6,7 @@ channel = "stable-24_05"
 packages = ["unzipNLS"]
 
 [deployment]
-run = ["sh", "-c", "node index.js"]
+run = ["sh", "-c", "node Priyansh.js"]
 
 [[ports]]
 localPort = 8080
@@ -22,4 +22,4 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "node index.js"
+args = "node Priyansh.js"
