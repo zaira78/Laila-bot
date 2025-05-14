@@ -10,9 +10,10 @@ module.exports.config = {
 module.exports.run = async function({ api, event, Users }) {
   try {
     const { threadID } = event;
-    if (!event.logMessageData) return;
+    if (!event.logMessageData || !event.logMessageData.addedParticipants) {
+      return;
+    }
     
-    const { participantIDs } = await api.getThreadInfo(threadID);
     const botID = api.getCurrentUserID();
     const joinIDs = event.logMessageData.addedParticipants.map(user => user.userFbId);
     
@@ -26,10 +27,10 @@ module.exports.run = async function({ api, event, Users }) {
         const welcomeMessage = `Welcome ${userName} to the group! 👋`;
         await api.sendMessage(welcomeMessage, threadID);
       } catch (err) {
-        console.error(`Error welcoming user ${id}:`, err);
+        console.error(`Error welcoming user ${id}:`, err.message);
       }
     }
   } catch (error) {
-    console.error('Error in join event:', error);
+    console.error('Error in join event:', error.message);
   }
 };
