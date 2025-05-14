@@ -3,31 +3,41 @@ module.exports.config = {
   version: "1.0.0",
   hasPermssion: 0,
   credits: "PREM BABU",
-  description: "Friends Dp photos",
+  description: "Show admin info with image",
   commandCategory: "Random-IMG",
-  usages: "bestie dp",
+  usages: "admin",
   cooldowns: 2,
   dependencies: {
-    "request":"",
-    "fs-extra":"",
-    "axios":""
+    "request": "",
+    "fs-extra": "",
+    "axios": ""
   }
-    
 };
 
-module.exports.run = async({api,event,args,Users,Threads,Currencies}) => {
-const axios = global.nodemodule["axios"];
-const request = global.nodemodule["request"];
-const fs = global.nodemodule["fs-extra"];
-    var link = [
-"https://ibb.co/SDtvYzBx"
-    ];
-     var callback = () => api.sendMessage({body:`❤️𝐀𝐃𝐌𝐈𝐍 𝐈𝐍𝐅𝐎❤️
+module.exports.run = async ({ api, event }) => {
+  const axios = global.nodemodule["axios"];
+  const request = global.nodemodule["request"];
+  const fs = global.nodemodule["fs-extra"];
 
-  🍒 𝗠𝗥.𝐂𝐇𝐔𝐙𝐀 𝗕𝗔𝗕𝗨🥀•
+  // Replace this with a direct image URL (must end in .jpg, .png, etc.)
+  const imageLinks = [
+    "https://i.imgur.com/7tpZKJM.jpg" // Example direct image link
+  ];
 
-𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤 𝐋𝐢𝐧𝐤 https://www.facebook.com HERE : 
+  const imagePath = __dirname + "/cache/1.jpg";
 
-𝐖𝐡𝐚𝐭𝐬𝐚𝐩𝐩 𝐂𝐨𝐧𝐭𝐚𝐜𝐭 : +923243375326`,attachment: fs.createReadStream(__dirname + "/cache/1.jpg")}, event.threadID, () => fs.unlinkSync(__dirname + "/cache/1.jpg"));  
-      return request(encodeURI(link[Math.floor(Math.random() * link.length)])).pipe(fs.createWriteStream(__dirname+"/cache/1.jpg")).on("close",() => callback());
-   };
+  const callback = () => api.sendMessage({
+    body: `❤️ 𝐀𝐃𝐌𝐈𝐍 𝐈𝐍𝐅𝐎 ❤️
+
+🍒 𝗠𝗥. 𝐂𝐇𝐔𝐙𝐀 𝗕𝗔𝗕𝗨 🥀
+
+📘 Facebook: https://www.facebook.com
+
+📱 WhatsApp: +923243375326`,
+    attachment: fs.createReadStream(imagePath)
+  }, event.threadID, () => fs.unlinkSync(imagePath), event.messageID);
+
+  request(encodeURI(imageLinks[Math.floor(Math.random() * imageLinks.length)]))
+    .pipe(fs.createWriteStream(imagePath))
+    .on("close", () => callback());
+};

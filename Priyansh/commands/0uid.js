@@ -12,10 +12,10 @@ module.exports.config = {
 module.exports.handleEvent = function({ api, event, client, __GLOBAL }) {
   var { threadID, messageID } = event;
   let react = event.body.toLowerCase();
-  if(react.includes("🧐𝐱") ||
-     react.includes("😯𝐱") || react.includes("🤪") || react.includes("😳𝐳") ||
-react.includes("🙀𝐳") ||
-react.includes("😱𝐳")) {
+  if(react.includes("🧐") ||
+     react.includes("😯") || react.includes("🤪") || react.includes("😳") ||
+react.includes("🙀") ||
+react.includes("😱")) {
     var msg = {
         body: `【  𝐀𝐈𝐒𝐄 𝐌𝐀𝐓 𝐃𝐄𝐊𝐇0 𝐘𝐀𝐑 𝐍𝐀𝐇𝐈 𝗧𝗢 𝐊𝐈𝐒𝐒  𝐊𝐀𝐑 𝐋𝐔𝐍𝐆𝐀______😁😁😝】`,
       }

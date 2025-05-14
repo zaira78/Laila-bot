@@ -1,55 +1,51 @@
 module.exports.config = {
- name: "uid",
- version: "1.0.0",
- permission: 0,
- credits: "Aaryan",
- usePrefix: false,
- description: "get user id.",
- commandCategory: "without prefix",
- cooldowns: 5
+  name: "uid",
+  version: "1.0.0",
+  permission: 0,
+  credits: "Aaryan (fixed by ChatGPT)",
+  usePrefix: false,
+  description: "Get user ID from reply, mention, or link.",
+  commandCategory: "without prefix",
+  cooldowns: 5
 };
 
-module.exports.run = async function({ event, api, args, client, Currencies, Users, utils, __GLOBAL, reminder }) {
-const fs = global.nodemodule["fs-extra"];
-		const request = global.nodemodule["request"];
-		const axios = global.nodemodule['axios']; 
-		if(event.type == "message_reply") { 
-			let name = await Users.getNameUser(event.messageReply.senderID) 
- uid = event.messageReply.senderID
- var callback = () =>   api.sendMessage({body:`=== [ 𝗨𝗜𝗗 𝗨𝗦𝗘𝗥 ] ====\n━━━━━━━━━━━━━━━━━━\n[ ▶️]➜ 𝗜𝗗: ${uid}\n[ ▶️]➜ 𝗜𝗕: m.me/${uid}\n[ ▶️]➜ 𝗟𝗶𝗻𝗸𝗳𝗯: https://www.facebook.com/profile.php?id=${uid}\n━━━━━━━━━━━━━━━━━━`, attachment: fs.createReadStream(__dirname + "/cache/1.png")}, event.threadID,
-				() => fs.unlinkSync(__dirname + "/cache/1.png"),event.messageID); 
-		return request(encodeURI(`https://graph.facebook.com/${uid}/picture?height=1500&width=1500&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`)).pipe(fs.createWriteStream(__dirname+'/cache/1.png')).on('close',
-				() => callback()); 
-		}
-		if (!args[0]) {
-			var uid = event.senderID;
-			const res = await axios.get(`https://www.nguyenmanh.name.vn/api/fbInfo?id=${uid}&apikey=LV7LWgAp`);
-var name = res.data.result.name 
-				var callback = () =>  api.sendMessage({body:`=== [ 𝗨𝗜𝗗 𝗨𝗦𝗘𝗥 ] ====\n━━━━━━━━━━━━━━━━━━\n[ ▶️]➜ 𝗜𝗗: ${event.senderID}\n[ ▶️]➜ 𝗜𝗕: m.me/${event.senderID}\n[ ▶️]➜ 𝗟𝗶𝗻𝗸𝗳𝗯: https://www.facebook.com/profile.php?id=${event.senderID}\n━━━━━━━━━━━━━━━━━━`, attachment: fs.createReadStream(__dirname + "/cache/1.png")}, event.threadID,
-				() => fs.unlinkSync(__dirname + "/cache/1.png"),event.messageID); 
-		return request(encodeURI(`https://graph.facebook.com/${event.senderID}/picture?height=1500&width=1500&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`)).pipe(fs.createWriteStream(__dirname+'/cache/1.png')).on('close',
-				() => callback()); 
-		}
-		else {
- if (args[0].indexOf(".com/")!==-1) {
-		const res_ID = await api.getUID(args[0]);
-	 var name = data.name
-var data = await api.getUserInfoV2(res_ID);
-		var username = data.username
-		var link = data.link
-		var callback = () => api.sendMessage({body:`=== [ 𝗨𝗜𝗗 𝗨𝗦𝗘𝗥 ] ====\n━━━━━━━━━━━━━━━━━━\n[ ▶️]➜ 𝗜𝗗: ${res_ID}\n[ ▶️]➜ 𝗜𝗕: m.me/${res_ID}\n[ ▶️]➜ 𝗟𝗶𝗻𝗸𝗳𝗯: ${link}\n━━━━━━━━━━━━━━━━━━`, attachment: fs.createReadStream(__dirname + "/cache/1.png")}, event.threadID,
-				() => fs.unlinkSync(__dirname + "/cache/1.png"),event.messageID); 
-		return request(encodeURI(`https://graph.facebook.com/${res_ID}/picture?height=1500&width=1500&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`)).pipe(fs.createWriteStream(__dirname+'/cache/1.png')).on('close',
-				() => callback()); }
- else {
-	if (args.join().indexOf('@') !== -1) 
-			var uid = Object.keys(event.mentions) 
-			var callback = () => 
-api.sendMessage({body:`=== [ 𝗨𝗜𝗗 𝗨𝗦𝗘𝗥 ] ====\n━━━━━━━━━━━━━━━━━━\n[ ▶️]➜ 𝗜𝗗: ${uid}\n[ ▶️]➜ 𝗜𝗕: m.me/${uid}\n[ ▶️]➜ 𝗟𝗶𝗻𝗸𝗳𝗯: https://www.facebook.com/profile.php?id=${uid}\n━━━━━━━━━━━━━━━━━━`, attachment: fs.createReadStream(__dirname + "/cache/1.png")}, event.threadID,
-				() => fs.unlinkSync(__dirname + "/cache/1.png"),event.messageID); 
-		return request(encodeURI(`https://graph.facebook.com/${uid}/picture?height=1500&width=1500&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`)).pipe(fs.createWriteStream(__dirname+'/cache/1.png')).on('close',
-				() => callback()); 
+module.exports.run = async function({ event, api, args, Users }) {
+  const fs = global.nodemodule["fs-extra"];
+  const request = global.nodemodule["request"];
+  const axios = global.nodemodule["axios"];
+  const accessToken = "6628568379|c1e620fa708a1d5696fb991c1bde5662";
+  let uid, name;
 
- }
-}
-}
+  // Helper function to download and send profile pic
+  const sendProfile = async (uid, threadID, messageID) => {
+    const callback = () => api.sendMessage({
+      body: `=== [ 𝗨𝗜𝗗 𝗨𝗦𝗘𝗥 ] ====\n━━━━━━━━━━━━━━━━━━\n[ ▶️]➜ 𝗜𝗗: ${uid}\n[ ▶️]➜ 𝗜𝗕: m.me/${uid}\n[ ▶️]➜ 𝗟𝗶𝗻𝗸𝗳𝗯: https://www.facebook.com/profile.php?id=${uid}\n━━━━━━━━━━━━━━━━━━`,
+      attachment: fs.createReadStream(__dirname + "/cache/1.png")
+    }, threadID, () => fs.unlinkSync(__dirname + "/cache/1.png"), messageID);
+
+    request(`https://graph.facebook.com/${uid}/picture?height=1500&width=1500&access_token=${accessToken}`)
+      .pipe(fs.createWriteStream(__dirname + '/cache/1.png'))
+      .on('close', () => callback());
+  };
+
+  try {
+    if (event.type === "message_reply") {
+      uid = event.messageReply.senderID;
+      await sendProfile(uid, event.threadID, event.messageID);
+    } else if (!args[0]) {
+      uid = event.senderID;
+      await sendProfile(uid, event.threadID, event.messageID);
+    } else if (args[0].includes(".com/")) {
+      uid = await api.getUID(args[0]);
+      await sendProfile(uid, event.threadID, event.messageID);
+    } else if (args.join().includes("@")) {
+      uid = Object.keys(event.mentions)[0];
+      await sendProfile(uid, event.threadID, event.messageID);
+    } else {
+      return api.sendMessage("Invalid input. Please reply to a message, mention a user, or provide a Facebook profile link.", event.threadID, event.messageID);
+    }
+  } catch (error) {
+    console.error("UID command error:", error);
+    return api.sendMessage("An error occurred while retrieving the UID.", event.threadID, event.messageID);
+  }
+};
