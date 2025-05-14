@@ -1,4 +1,8 @@
 
+const { loadImage, createCanvas } = require("canvas");
+const fs = require("fs-extra");
+const axios = require("axios");
+
 module.exports.config = {
   name: "hackv2",
   version: "1.0.0",
@@ -9,16 +13,13 @@ module.exports.config = {
   usages: "@mention",
   cooldowns: 5,
   dependencies: {
+    "canvas": "",
     "axios": "",
-    "fs-extra": "",
-    "canvas": ""
+    "fs-extra": ""
   }
 };
 
 module.exports.run = async function({ api, event, args }) {
-  const { loadImage, createCanvas } = require("canvas");
-  const fs = require("fs-extra");
-  const axios = require("axios");
   const pathImg = __dirname + "/cache/background.png";
   const pathAvt = __dirname + "/cache/avt.png";
 
@@ -26,14 +27,12 @@ module.exports.run = async function({ api, event, args }) {
     var id = Object.keys(event.mentions)[0] || event.senderID;
     let name = event.mentions[id]?.replace("@", "") || "User";
 
-    // Get avatar
     let avatarResponse = await axios.get(
       `https://graph.facebook.com/${id}/picture?width=720&height=720&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`,
       { responseType: "arraybuffer" }
     );
     fs.writeFileSync(pathAvt, Buffer.from(avatarResponse.data, 'binary'));
 
-    // Get background
     let bgResponse = await axios.get("https://i.imgur.com/Cozetb3.jpg", { responseType: "arraybuffer" });
     fs.writeFileSync(pathImg, Buffer.from(bgResponse.data, 'binary'));
 
@@ -45,7 +44,7 @@ module.exports.run = async function({ api, event, args }) {
 
     ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
     ctx.drawImage(baseAvatar, 83, 280, 100, 101);
-
+    
     ctx.font = "400 26px Arial";
     ctx.fillStyle = "#00FFFF";
     ctx.textAlign = "start";

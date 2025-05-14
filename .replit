@@ -6,7 +6,7 @@ channel = "stable-24_05"
 packages = ["unzipNLS"]
 
 [deployment]
-run = ["sh", "-c", "npm run start"]
+run = ["sh", "-c", "node Priyansh.js"]
 
 [[ports]]
 localPort = 8080

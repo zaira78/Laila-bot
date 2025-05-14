@@ -4,32 +4,33 @@ module.exports.config = {
   eventType: ["log:subscribe"],
   version: "1.0.0",
   credits: "Priyansh",
-  description: "Notify new member joins"
+  description: "Welcome new members with custom message"
 };
 
 module.exports.run = async function({ api, event, Users }) {
-  const { threadID } = event;
-  const { readFileSync, existsSync } = require("fs-extra");
   const { join } = require("path");
-  const welcomeMessage = "Welcome to the group! 🎉";
+  const { threadID } = event;
   
-  try {
-    const threadData = await api.getThreadInfo(threadID);
-    if (!threadData) return;
-
-    const joinedUserIDs = event.logMessageData.addedParticipants.map(user => user.userFbId);
-    
-    for (const userID of joinedUserIDs) {
-      const userInfo = await Users.getInfo(userID);
-      const userName = userInfo?.name || "New member";
-      
-      // Send welcome message
-      await api.sendMessage(
-        `${welcomeMessage}\n→ Welcome ${userName} to ${threadData.threadName}!`,
-        threadID
-      );
-    }
-  } catch (error) {
-    console.error("Join event error:", error);
+  if (event.logMessageData.addedParticipants.some(i => i.userFbId == api.getCurrentUserID())) {
+    api.changeNickname(`[ ${global.config.PREFIX} ] • ${(!global.config.BOTNAME) ? "Bot" : global.config.BOTNAME}`, threadID, api.getCurrentUserID());
+    return api.sendMessage(`Connected successfully! Type ${global.config.PREFIX}help to see available commands.`, threadID);
   }
+  
+  const threadData = await api.getThreadInfo(threadID);
+  const mentions = [];
+  let msg = `Welcome to ${threadData.threadName}\n`;
+
+  for (const { userFbId } of event.logMessageData.addedParticipants) {
+    const userInfo = await Users.getInfo(userFbId);
+    const userName = userInfo?.name || "New member";
+    mentions.push({ tag: userName, id: userFbId });
+    msg += `→ ${userName}\n`;
+  }
+
+  msg += "\nWelcome to the group! 🎉";
+  
+  return api.sendMessage({
+    body: msg,
+    mentions
+  }, threadID);
 };
