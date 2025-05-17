@@ -12,11 +12,11 @@ module.exports.config = {
 
 module.exports.handleEvent = function({ api, event, client, __GLOBAL }) {
 	var { threadID, messageID } = event;
-	if (event.body.indexOf("Rasgulla")==0 || event.body.indexOf("rasgulla")==0 || event.body.indexOf("rasgulla")==0 || event.body.indexOf("Rasgulle")==0) {
+	if (event.body.indexOf("Syapa")==0 || event.body.indexOf("syapa")==0 || event.body.indexOf("♟️")==0 || event.body.indexOf("Rasgulle")==0) {
 		var msg = {
-				body: "💝 YE LO BBY RASGULLA KHAO 🧀\n\n(-𝐌𝐚𝐝𝐞 𝐁𝐲 𝗠𝗿..𝐂𝐇𝐔𝐙𝐀❤️-)",
+				body: "𝗦𝗬𝗔𝗣𝗔 𝗢𝗪𝗡𝗘𝗥 𝗖𝗛𝗨𝗭𝗔 𝗞𝗘 𝗗𝗢𝗦𝗧 𝗛𝗔𝗜𝗡\n\n➜𝗙𝗥𝗜𝗘𝗡𝗗✪\n     *┏━━ೋ•  •ೋ━━┓*\n                𝐒𝐘𝐀𝐏𝐀\n    *┗━━ೋ•  •ೋ━━┛*\n\n✦𝐅𝐁 𝐋𝐢𝐧𝐤✦\n\nhttps://www.facebook.com/share/1BUFRGt14a/mibextid=ZbWKwL",
 				attachment: 
-fs.createReadStream(__dirname + `/cache/rasgulla.jpg`)
+fs.createReadStream(__dirname + `/noprefix/Shayan.jpg`)
 			}
 			api.sendMessage(msg, threadID, messageID);
     api.setMessageReaction("🧀", event.messageID, (err) => {}, true)

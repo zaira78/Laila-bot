@@ -1,81 +1,103 @@
-
-const axios = require("axios");
-const fs = require("fs-extra");
-const { loadImage, createCanvas } = require("canvas");
-
 module.exports.config = {
   name: "hack",
   version: "1.0.0",
   hasPermssion: 0,
   credits: "𝐏𝐫𝐢𝐲𝐚𝐧𝐬𝐡 𝐑𝐚𝐣𝐩𝐮𝐭",
-  description: "Generate fake hack image of mentioned user",
-  commandCategory: "fun",
+  description: "hack",
+  commandCategory: "hack",
   usages: "@mention",
   dependencies: {
-    "axios": "",
-    "fs-extra": "",
-    "canvas": ""
+        "axios": "",
+        "fs-extra": ""
   },
   cooldowns: 0
 };
 
-module.exports.run = async function ({ api, event }) {
-  try {
-    const id = Object.keys(event.mentions)[0] || event.senderID;
-    if (!id) return api.sendMessage("Please mention someone to hack!", event.threadID);
+module.exports.wrapText = (ctx, name, maxWidth) => {
+	return new Promise(resolve => {
+		if (ctx.measureText(name).width < maxWidth) return resolve([name]);
+		if (ctx.measureText('W').width > maxWidth) return resolve(null);
+		const words = name.split(' ');
+		const lines = [];
+		let line = '';
+		while (words.length > 0) {
+			let split = false;
+			while (ctx.measureText(words[0]).width >= maxWidth) {
+				const temp = words[0];
+				words[0] = temp.slice(0, -1);
+				if (split) words[1] = `${temp.slice(-1)}${words[1]}`;
+				else {
+					split = true;
+					words.splice(1, 0, temp.slice(-1));
+				}
+			}
+			if (ctx.measureText(`${line}${words[0]}`).width < maxWidth) line += `${words.shift()} `;
+			else {
+				lines.push(line.trim());
+				line = '';
+			}
+			if (words.length === 0) lines.push(line.trim());
+		}
+		return resolve(lines);
+	});
+} 
 
-    const name = event.mentions[id]?.replace("@", "") || "User";
-    const pathImg = __dirname + "/cache/background.png";
-    const pathAvt = __dirname + "/cache/Avtmot.png";
+module.exports.run = async function ({ args, Users, Threads, api, event, Currencies }) {
+  const { loadImage, createCanvas } = require("canvas");
+  const fs = global.nodemodule["fs-extra"];
+  const axios = global.nodemodule["axios"];
+  let pathImg = __dirname + "/cache/background.png";
+  let pathAvt1 = __dirname + "/cache/Avtmot.png";
+  
+  
+  var id = Object.keys(event.mentions)[0] || event.senderID;
+  var name = await Users.getNameUser(id);
+  var ThreadInfo = await api.getThreadInfo(event.threadID);
+  
+  var background = [
 
-    // Download avatar
-    try {
-      const avatarResponse = await axios.get(
-        `https://graph.facebook.com/${id}/picture?width=720&height=720&access_token=6628568379|c1e620fa708a1d5696fb991c1bde5662`,
-        { responseType: "arraybuffer" }
-      );
-      fs.writeFileSync(pathAvt, Buffer.from(avatarResponse.data));
-    } catch (err) {
-      return api.sendMessage("Error fetching avatar", event.threadID);
-    }
+    "https://i.imgur.com/VQXViKI.png"
+];
+  var rd = background[Math.floor(Math.random() * background.length)];
+  
+  let getAvtmot = (
+    await axios.get(
+      `https://graph.facebook.com/${id}/picture?width=720&height=720&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`,
+      { responseType: "arraybuffer" }
+    )
+  ).data;
+  fs.writeFileSync(pathAvt1, Buffer.from(getAvtmot, "utf-8"));
 
-    // Download background
-    try {
-      const backgroundResponse = await axios.get("https://i.imgur.com/VQXViKI.png", { responseType: "arraybuffer" });
-      fs.writeFileSync(pathImg, Buffer.from(backgroundResponse.data));
-    } catch (err) {
-      fs.unlinkSync(pathAvt);
-      return api.sendMessage("Error fetching background", event.threadID);
-    }
+  let getbackground = (
+    await axios.get(`${rd}`, {
+      responseType: "arraybuffer",
+    })
+  ).data;
+  fs.writeFileSync(pathImg, Buffer.from(getbackground, "utf-8"));
 
-    const baseImage = await loadImage(pathImg);
-    const baseAvatar = await loadImage(pathAvt);
-
-    const canvas = createCanvas(baseImage.width, baseImage.height);
-    const ctx = canvas.getContext("2d");
-
-    ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
+  let baseImage = await loadImage(pathImg);
+  let baseAvt1 = await loadImage(pathAvt1);
+ 
+  let canvas = createCanvas(baseImage.width, baseImage.height);
+  let ctx = canvas.getContext("2d");
+  ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
     ctx.font = "400 23px Arial";
-    ctx.fillStyle = "#1878F3";
-    ctx.textAlign = "start";
-    ctx.fillText(name, 200, 497);
-    ctx.drawImage(baseAvatar, 83, 437, 100, 101);
+	  ctx.fillStyle = "#1878F3";
+	  ctx.textAlign = "start";
+	  
+	  
+	  const lines = await this.wrapText(ctx, name, 1160);
+	  ctx.fillText(lines.join('\n'), 200,497);//comment
+	  ctx.beginPath();
 
-    const imageBuffer = canvas.toBuffer();
-    fs.writeFileSync(pathImg, imageBuffer);
-    fs.unlinkSync(pathAvt);
 
-    return api.sendMessage(
-      { 
-        body: `Hack simulation complete! Here's ${name}'s hacked profile:`,
-        attachment: fs.createReadStream(pathImg)
-      },
+  ctx.drawImage(baseAvt1, 83, 437, 100, 101);
+  
+  const imageBuffer = canvas.toBuffer();
+  fs.writeFileSync(pathImg, imageBuffer);
+  fs.removeSync(pathAvt1);
+  return api.sendMessage({ body: ` `, attachment: fs.createReadStream(pathImg) },
       event.threadID,
       () => fs.unlinkSync(pathImg),
-      event.messageID
-    );
-  } catch (err) {
-    console.error(err);
-    return api.sendMessage("An error occurred while processing the command.", event.threadID);
-  }
-};
+      event.messageID);
+    }
