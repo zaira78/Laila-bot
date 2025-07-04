@@ -17,7 +17,7 @@ module.exports.handleEvent = function({ api, event, client, __GLOBAL }) {
 react.includes("inbox") ||
 react.includes("Inbox")) {
     var msg = {
-        body: `ओय शरम नही आती इनबॉक्स बुलाते हो किसी को जो बोलना है यही बोलो समझे।😒😐👈`,
+        body: `𝘐𝘉 𝘉𝘜𝘓𝘈𝘛𝘌 𝘏𝘖 𝘚𝘏𝘈𝘙𝘈𝘔 𝘕𝘈𝘏𝘐 𝘈𝘈𝘛𝘐 𝘉𝘈𝘋𝘛𝘈𝘔𝘌𝘌𝘡😒`,
       }
       api.sendMessage(msg, threadID, messageID);
     api.setMessageReaction("👀", event.messageID, (err) => {}, true)
