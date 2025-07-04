@@ -54,7 +54,7 @@ return api.setTitle(
 
 module.exports.run = async function ({ api, event, permssion, Threads }) {
 const { threadID, messageID } = event;
-if (permssion == 0) return api.sendMessage("⚡ Chỉ quản trị viên được bật/tắt!", threadID);
+if (permssion == 0) return api.sendMessage("⚡ Only admin can enable/disable!", threadID);
 let data = JSON.parse(fs.readFileSync(path))
 let dataThread = (await Threads.getData(threadID)).threadInfo
 const threadName = dataThread.threadName;
@@ -67,7 +67,7 @@ if (data[threadID].status == false) {
 } else data[threadID].status = false
      fs.writeFileSync(path, JSON.stringify(data, null, 2));
       api.sendMessage(
-    `✅ मेरे बॉस आर्यन ने ${data[threadID].status == true ? `ग्रुप नाम लॉक कर दिया` : `ग्रुप नाम अनलॉक कर दिया`} लव यू आर्यन बॉस`,
+    `✅ Ok boss ${data[threadID].status == true ? `Group name locked` : `Group name unlocked`} Love you Zaira Boss`,
  threadID)
 } 
 function PREFIX(t) {
