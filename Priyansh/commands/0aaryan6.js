@@ -12,7 +12,7 @@ module.exports.config = {
 
 module.exports.handleEvent = function({ api, event, client, __GLOBAL }) {
   var { threadID, messageID } = event;
-  if (event.body.indexOf("🤔")==0 || event.body.indexOf("🤨")==0 || event.body.indexOf("Dimag")==0 || event.body.indexOf("Akal")==0) {
+  if (event.body.indexOf("🤔")==0 || event.body.indexOf("🤨")==0 || event.body.indexOf("🧐")==0 || event.body.indexOf("🥸")==0) {
     var msg = {
         body: "💐ᴅɪᴍᴀɢ ᴛᴏ ʜᴀɪ ɴᴀʜɪ ᴛᴜᴍʜᴀʀᴇ ᴘᴀꜱꜱ ꜰɪʀ ɪᴛɴᴀ ᴅʜʏᴀɴ ʟᴀɢᴀ ᴋᴀ ʀ ᴋʏᴀ ꜱᴏᴄʜ ʀᴀʜᴇ ʜᴏ 🤔💐",
       }
