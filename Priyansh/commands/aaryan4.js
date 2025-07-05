@@ -12,12 +12,12 @@ module.exports.config = {
 module.exports.handleEvent = function({ api, event, client, __GLOBAL }) {
 	var { threadID, messageID } = event;
 	let react = event.body.toLowerCase();
-	if(react.includes("😅") ||
-     react.includes("🤣") || react.includes("😀") || react.includes("😃") ||
-react.includes("😄") ||
-react.includes("😹")) {
+	if(react.includes("🙂") ||
+     react.includes("🙂") || react.includes("🙂") || react.includes("😃") ||
+react.includes("🙂") ||
+react.includes("🙂")) {
 		var msg = {
-				body: `😸😸😸😸😸`,
+				body: `𝘈𝘞𝘞𝘞𝘞,𝘈𝘕𝘋𝘈𝘙 𝘚𝘌 𝘛𝘖𝘖𝘛𝘌 𝘏𝘖 𝘛𝘖 𝘍𝘌𝘝𝘐𝘒𝘖𝘓 𝘗𝘌𝘌𝘓𝘖 𝘉𝘈𝘉𝘜🥺`,
 			}
 			api.sendMessage(msg, threadID, messageID);
     api.setMessageReaction("🤣", event.messageID, (err) => {}, true)
