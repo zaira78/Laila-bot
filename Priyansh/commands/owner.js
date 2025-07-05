@@ -24,14 +24,14 @@ const fs = global.nodemodule["fs-extra"];
      ];
      var callback = () => api.sendMessage({body:`🔰𝙊𝙒𝙉𝙀𝙍 𝙄𝙉𝙁𝙊🔰
 
- ཫ༄𒁍⃝𝐌𝐀𝐑⃟𝐈𝐍𝐀•◡•)
+  𝆺𝅥⃝𝗭𝗔𝗜𝗥⃟𝗔•)
 
 𝐀𝐠𝐞 : 🙈
 
-𝐑𝐞𝐥𝐚𝐭𝐢𝐨𝐧𝐬𝐡𝐢𝐩 𝐖𝐢𝐭𝐡 : 🙈🙈
+𝐑𝐞𝐥𝐚𝐭𝐢𝐨𝐧𝐬𝐡𝐢𝐩 𝐖𝐢𝐭𝐡 : @Cʀɩɱɩ Nʌɭ
 
 
-𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤 𝐋𝐢𝐧𝐤 https://www.facebook.com
+𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤 𝐋𝐢𝐧𝐤 https://www.facebook.com/callmebebo77
 
 𝐖𝐡𝐚𝐭𝐬𝐚𝐩𝐩 𝐂𝐨𝐧𝐭𝐚𝐜𝐭 : 🙈🙈🙈
 
