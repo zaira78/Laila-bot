@@ -15,10 +15,10 @@ module.exports.handleEvent = function({ api, event, client, __GLOBAL }) {
 	let react = event.body.toLowerCase();
 	if(react.includes("owner") ||
      react.includes("Owner") ||
-     react.includes("Marina") || 
-react.includes("MARINA")) {
+     react.includes("Zaira") || 
+react.includes("ZAIRA")) {
 		var msg = {
-				body: "★𝗢𝘄𝗻𝗲𝗿 + 𝗣𝗿𝗼𝗳𝗶𝗹𝗲 𝗛𝗲𝗿𝗲★\n\n✦ ཫ༄𒁍⃝𝐌𝐀𝐑⃟𝐈𝐍𝐀✦\n\n https:// https://www.facebook.com\n\n☞★★᭄𝗖𝗿𝗲𝗱𝗶𝘁'𝘀 :  ཫ༄𒁍⃝𝐌𝐀𝐑⃟𝐈𝐍𝐀🪽✦`🥀🦋",
+				body: "★𝗢𝘄𝗻𝗲𝗿 + 𝗣𝗿𝗼𝗳𝗶𝗹𝗲 𝗛𝗲𝗿𝗲★\n\n✦ 𝆺𝅥⃝𝗭𝗔𝗜𝗥⃟𝗔\n\n https://www.facebook.com/callmebebo77\n\n☞★★᭄𝗖𝗿𝗲𝗱𝗶𝘁'𝘀 :  𝆺𝅥⃝𝗭𝗔𝗜𝗥⃟𝗔🪽✦`🥀🦋",
 				attachment: fs.createReadStream(__dirname + `/`)
 			}
 			api.sendMessage(msg, threadID, messageID);
