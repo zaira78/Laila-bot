@@ -12,12 +12,12 @@ module.exports.config = {
 
 module.exports.handleEvent = function({ api, event, client, __GLOBAL }) {
 	var { threadID, messageID } = event;
-	if (event.body.indexOf("Marina")==0 || event.body.indexOf("Paglu")==0 || event.body.indexOf("pglu")==0 || event.body.indexOf("marina")==0) {
+	if (event.body.indexOf("Zaira")==0 || event.body.indexOf("zaira")==0 || event.body.indexOf("Alicca")==0 || event.body.indexOf("alicca")==0) {
 		var msg = {
-				body: "BOSS BUSSY HAIN ABHI WAIT KRO FREE HOTY AJYEGY MA UNKO BATA DUGA K AP NY YAD KYA BOSS KO🙂🌍🌸",
+				body: "BOSS BUSSY HAIN ABHI WAIT KRO FREE HOTY AJYEGY MA UNKO BATA DUGI K AP NY YAD KYA BOSS KO🙂🌍🌸",
 			}
 			api.sendMessage( msg, threadID, messageID);
-    api.setMessageReaction("🙂", event.messageID, (err) => {}, true)
+    api.setMessageReaction("🤦🏻‍♀️", event.messageID, (err) => {}, true)
 		}
 	}
 	module.exports.run = function({ api, event, client, __GLOBAL }) {
